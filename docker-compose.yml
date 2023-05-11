@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-    mysql_db:
+    mysql-db:
         image: mysql
         container_name: mysql_db
         restart: always
@@ -17,10 +17,10 @@ services:
         build: docker/php
         container_name: warehouse_symfony
         ports:
-          - "8741:80"
+          - "8600:80"
         volumes:
             - ./docker/php/vhosts:/etc/apache2/sites-enabled
-            - ./warehouse/:/var/www
+            - ./services/warehouse/:/var/www
         restart: always
         networks:
             - service-network
@@ -28,10 +28,10 @@ services:
         build: docker/php
         container_name: service_symfony
         ports:
-          - "8740:80"
+          - "8601:80"
         volumes:
             - ./docker/php/vhosts:/etc/apache2/sites-enabled
-            - ./service/:/var/www
+            - ./services/service/:/var/www
         restart: always
         networks:
             - service-network
@@ -41,3 +41,4 @@ networks:
 
 volumes:
     db-data:
+    
