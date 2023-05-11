@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+    mysql_db:
+        image: mysql
+        container_name: mysql_db
+        restart: always
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        networks:
+            - service-network
+
+
+
+    warehouse-www:
+        build: docker/php
+        container_name: warehouse_symfony
+        ports:
+          - "8741:80"
+        volumes:
+            - ./docker/php/vhosts:/etc/apache2/sites-enabled
+            - ./warehouse/:/var/www
+        restart: always
+        networks:
+            - service-network
+    service-www:
+        build: docker/php
+        container_name: service_symfony
+        ports:
+          - "8740:80"
+        volumes:
+            - ./docker/php/vhosts:/etc/apache2/sites-enabled
+            - ./service/:/var/www
+        restart: always
+        networks:
+            - service-network
+
+networks:
+    service-network:
+
+volumes:
+    db-data:
